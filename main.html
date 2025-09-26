@@ -1770,7 +1770,7 @@ void quickSort(std::vector<int>& arr, int low, int high) {
                          messageDiv.id = 'loader';
                          messageDiv.className = 'p-3 rounded-lg bg-slate-700 self-start';
                          messageDiv.innerHTML = `<div class="loader flex space-x-1.5">
-                                 <div class="dot w-2.5 h-2.5 bg-slate-400 rounded-full"></div>
+                                 <div class="dot w-2.5 h-2.5 bg-slate-400 r-ounded-full"></div>
                                  <div class="dot w-2.5 h-2.5 bg-slate-400 rounded-full"></div>
                                  <div class="dot w-2.5 h-2.5 bg-slate-400 rounded-full"></div>
                              </div>`;
@@ -1782,7 +1782,7 @@ void quickSort(std::vector<int>& arr, int low, int high) {
 
             // NOTE: The user's original backend URL is preserved.
             async function askGemini(prompt) {
-                const backendUrl = "http://10.205.255.96:3000/ask"; 
+                const backendUrl = "http://10.24.209.96:3000/ask"; 
                 
                 try {
                     const response = await fetch(backendUrl, {
