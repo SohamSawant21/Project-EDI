@@ -164,6 +164,21 @@
              font-size: 0.875rem;
              width: 100%;
         }
+
+        .line-highlight {
+            background-color: rgba(94, 234, 212, 0.15); /* A subtle teal highlight */
+            display: block;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .subtitle-display {
+            transition: opacity 0.3s ease-in-out;
+            font-style: italic;
+            color: #94a3b8; /* slate-400 */
+        }
+        .subtitle-display.fade {
+            opacity: 0;
+        }
         
         /* Application specific item styles */
         .db-record, .product-item, .post-item, .score-item, .task-item {
@@ -265,16 +280,34 @@
                     <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-4 sm:p-6">
                         <h3 class="text-2xl font-bold text-white mb-4">Bubble Sort Visualization</h3>
                         <div class="canvas-container mb-4"><canvas id="bubbleSortCanvas"></canvas></div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 items-center mb-4">
-                            <button id="randomizeBtnBS" class="btn btn-secondary py-2 px-4 rounded-lg">Randomize</button>
-                            <button id="playPauseBtnBS" class="btn btn-primary py-2 px-4 rounded-lg">Play</button>
-                            <div class="col-span-1 lg:col-span-2 flex items-center gap-3">
-                                <label for="speedSliderBS" class="text-sm text-slate-400">Speed</label>
-                                <input id="speedSliderBS" type="range" min="10" max="200" value="100" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
-                            </div>
-                            <button id="toggleMetricsBtnBS" class="btn btn-secondary py-2 px-4 rounded-lg col-span-1 sm:col-span-2 lg:col-span-4">Show Metrics</button>
-                            <button id="viewArBtnBS" class="btn btn-disabled py-2 px-4 rounded-lg col-span-1 sm:col-span-2 lg:col-span-4" disabled>View in AR (Coming Soon)</button>
+                        <div id="subtitleBS" class="subtitle-display h-12 flex items-center justify-center text-center px-4 mb-4 bg-slate-800/50 border border-slate-700 rounded-lg text-slate-300">
+                            Click Play to start the visualization.
                         </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                            <p class="text-sm font-medium text-center text-slate-400 mb-2">Generate Array</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                <button id="randomizeBtnBS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Random</button>
+                                <button id="nearlySortedBtnBS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Nearly Sorted</button>
+                                <button id="reversedBtnBS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Reversed</button>
+                                <button id="fewUniqueBtnBS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Few Unique</button>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                            <p class="text-sm font-medium text-center text-slate-400 mb-2">Controls</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 items-center">
+                                <button id="playPauseBtnBS" class="btn btn-primary py-2 px-2 rounded-md col-span-1 sm:col-span-1">Play</button>
+                                <div class="col-span-3 sm:col-span-3 flex items-center gap-2">
+                                    <label for="speedSliderBS" class="text-xs text-slate-400">Speed</label>
+                                    <input id="speedSliderBS" type="range" min="10" max="200" value="100" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                        <button id="toggleMetricsBtnBS" class="btn btn-secondary py-2 px-4 rounded-lg">Show Metrics</button>
+                        <button id="viewArBtnBS" class="btn btn-disabled py-2 px-4 rounded-lg" disabled>View in AR (Coming Soon)</button>
+                    </div>
                         <div id="metricsDashboardBS" class="hidden mt-4 bg-slate-800/50 p-4 rounded-lg border border-slate-700">
                              <h4 class="text-lg font-semibold text-white text-center mb-3">Performance Metrics</h4>
                              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
@@ -299,30 +332,29 @@
                                      <button id="togglePracticeBtnBS" class="btn btn-secondary text-sm py-1 px-3 rounded-md">Practice Mode</button>
                                  </div>
                                  <div id="codeDisplayBS">
-                                     <pre class="bg-slate-800 rounded-lg p-4 text-sm text-slate-300 overflow-x-auto"><code class="language-cpp">#include &lt;iostream&gt;
-#include &lt;vector&gt;
-#include &lt;utility&gt; // For std::swap
-
-void bubbleSort(std::vector&lt;int&gt;& arr) {
-    int n = arr.size();
-    bool swapped;
-    for (int i = 0; i < n - 1; ++i) {
-        swapped = false;
-        for (int j = 0; j < n - i - 1; ++j) {
-            if (arr[j] > arr[j + 1]) {
-                std::swap(arr[j], arr[j + 1]);
-                swapped = true;
-            }
-        }
-        // If no two elements were swapped
-        // by inner loop, then break
-        if (!swapped) {
-            break;
-        }
-    }
-}
+    <pre class="bg-slate-800 rounded-lg p-4 text-sm text-slate-300 overflow-x-auto"><code class="language-cpp" id="code-block-BS">
+<span id="bs-line-1">#include &lt;iostream&gt;</span>
+<span id="bs-line-2">#include &lt;vector&gt;</span>
+<span id="bs-line-3">#include &lt;utility&gt;</span>
+<span id="bs-line-4"></span>
+<span id="bs-line-5">void bubbleSort(std::vector&lt;int&gt;& arr) {</span>
+<span id="bs-line-6">    int n = arr.size();</span>
+<span id="bs-line-7">    bool swapped;</span>
+<span id="bs-line-8">    for (int i = 0; i < n - 1; ++i) {</span>
+<span id="bs-line-9">        swapped = false;</span>
+<span id="bs-line-10">        for (int j = 0; j < n - i - 1; ++j) {</span>
+<span id="bs-line-11">            if (arr[j] > arr[j + 1]) {</span>
+<span id="bs-line-12">                std::swap(arr[j], arr[j + 1]);</span>
+<span id="bs-line-13">                swapped = true;</span>
+<span id="bs-line-14">            }</span>
+<span id="bs-line-15">        }</span>
+<span id="bs-line-16">        if (!swapped) {</span>
+<span id="bs-line-17">            break;</span>
+<span id="bs-line-18">        }</span>
+<span id="bs-line-19">    }</span>
+<span id="bs-line-20">}</span>
 </code></pre>
-                                 </div>
+</div>
                                  <div id="codePracticeBS" class="hidden">
                                      <textarea id="codeInputBS" class="code-editor w-full h-80 rounded-lg p-4 text-sm" placeholder="Type your Bubble Sort code here..."></textarea>
                                      <button id="checkCodeBtnBS" class="btn btn-primary w-full mt-2 py-2">Check Code</button>
@@ -356,16 +388,34 @@ void bubbleSort(std::vector&lt;int&gt;& arr) {
                     <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-4 sm:p-6">
                          <h3 class="text-2xl font-bold text-white mb-4">Selection Sort Visualization</h3>
                         <div class="canvas-container mb-4"><canvas id="selectionSortCanvas"></canvas></div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 items-center mb-4">
-                            <button id="randomizeBtnSS" class="btn btn-secondary py-2 px-4 rounded-lg">Randomize</button>
-                            <button id="playPauseBtnSS" class="btn btn-primary py-2 px-4 rounded-lg">Play</button>
-                            <div class="col-span-1 lg:col-span-2 flex items-center gap-3">
-                                <label for="speedSliderSS" class="text-sm text-slate-400">Speed</label>
-                                <input id="speedSliderSS" type="range" min="10" max="200" value="100" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
-                            </div>
-                            <button id="toggleMetricsBtnSS" class="btn btn-secondary py-2 px-4 rounded-lg col-span-1 sm:col-span-2 lg:col-span-4">Show Metrics</button>
-                            <button id="viewArBtnSS" class="btn btn-disabled py-2 px-4 rounded-lg col-span-1 sm:col-span-2 lg:col-span-4" disabled>View in AR (Coming Soon)</button>
+                        <div id="subtitleSS" class="subtitle-display h-12 flex items-center justify-center text-center px-4 mb-4 bg-slate-800/50 border border-slate-700 rounded-lg text-slate-300">
+                            Click Play to start the visualization.
                         </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                            <p class="text-sm font-medium text-center text-slate-400 mb-2">Generate Array</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                <button id="randomizeBtnSS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Random</button>
+                                <button id="nearlySortedBtnSS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Nearly Sorted</button>
+                                <button id="reversedBtnSS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Reversed</button>
+                                <button id="fewUniqueBtnSS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Few Unique</button>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                            <p class="text-sm font-medium text-center text-slate-400 mb-2">Controls</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 items-center">
+                                <button id="playPauseBtnSS" class="btn btn-primary py-2 px-2 rounded-md col-span-1 sm:col-span-1">Play</button>
+                                <div class="col-span-3 sm:col-span-3 flex items-center gap-2">
+                                    <label for="speedSliderSS" class="text-xs text-slate-400">Speed</label>
+                                    <input id="speedSliderSS" type="range" min="10" max="200" value="100" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                        <button id="toggleMetricsBtnSS" class="btn btn-secondary py-2 px-4 rounded-lg">Show Metrics</button>
+                        <button id="viewArBtnSS" class="btn btn-disabled py-2 px-4 rounded-lg" disabled>View in AR (Coming Soon)</button>
+                    </div>
                         <div id="metricsDashboardSS" class="hidden mt-4 bg-slate-800/50 p-4 rounded-lg border border-slate-700">
                              <h4 class="text-lg font-semibold text-white text-center mb-3">Performance Metrics</h4>
                              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
@@ -388,27 +438,28 @@ void bubbleSort(std::vector&lt;int&gt;& arr) {
                                     <h4 class="text-xl font-semibold text-white">Code (C++)</h4>
                                     <button id="togglePracticeBtnSS" class="btn btn-secondary text-sm py-1 px-3 rounded-md">Practice Mode</button>
                                 </div>
-                                <div id="codeDisplaySS">
-                                    <pre class="bg-slate-800 rounded-lg p-4 text-sm text-slate-300 overflow-x-auto"><code class="language-cpp">#include &lt;iostream&gt;
-#include &lt;vector&gt;
-#include &lt;utility&gt; // For std::swap
-
-void selectionSort(std::vector&lt;int&gt;& arr) {
-    int n = arr.size();
-    for (int i = 0; i < n - 1; ++i) {
-        int min_idx = i;
-        for (int j = i + 1; j < n; ++j) {
-            if (arr[j] < arr[min_idx]) {
-                min_idx = j;
-            }
-        }
-        if (min_idx != i) {
-            std::swap(arr[min_idx], arr[i]);
-        }
-    }
-}
+                               <div id="codeDisplaySS">
+    <pre class="bg-slate-800 rounded-lg p-4 text-sm text-slate-300 overflow-x-auto"><code class="language-cpp" id="code-block-SS">
+<span id="ss-line-1">#include &lt;iostream&gt;</span>
+<span id="ss-line-2">#include &lt;vector&gt;</span>
+<span id="ss-line-3">#include &lt;utility&gt;</span>
+<span id="ss-line-4"></span>
+<span id="ss-line-5">void selectionSort(std::vector&lt;int&gt;& arr) {</span>
+<span id="ss-line-6">    int n = arr.size();</span>
+<span id="ss-line-7">    for (int i = 0; i < n - 1; ++i) {</span>
+<span id="ss-line-8">        int min_idx = i;</span>
+<span id="ss-line-9">        for (int j = i + 1; j < n; ++j) {</span>
+<span id="ss-line-10">            if (arr[j] < arr[min_idx]) {</span>
+<span id="ss-line-11">                min_idx = j;</span>
+<span id="ss-line-12">            }</span>
+<span id="ss-line-13">        }</span>
+<span id="ss-line-14">        if (min_idx != i) {</span>
+<span id="ss-line-15">            std::swap(arr[min_idx], arr[i]);</span>
+<span id="ss-line-16">        }</span>
+<span id="ss-line-17">    }</span>
+<span id="ss-line-18">}</span>
 </code></pre>
-                                </div>
+</div>
                                 <div id="codePracticeSS" class="hidden">
                                     <textarea id="codeInputSS" class="code-editor w-full h-80 rounded-lg p-4 text-sm" placeholder="Type your Selection Sort code here..."></textarea>
                                     <button id="checkCodeBtnSS" class="btn btn-primary w-full mt-2 py-2">Check Code</button>
@@ -440,16 +491,34 @@ void selectionSort(std::vector&lt;int&gt;& arr) {
                     <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-4 sm:p-6">
                          <h3 class="text-2xl font-bold text-white mb-4">Insertion Sort Visualization</h3>
                         <div class="canvas-container mb-4"><canvas id="insertionSortCanvas"></canvas></div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 items-center mb-4">
-                            <button id="randomizeBtnIS" class="btn btn-secondary py-2 px-4 rounded-lg">Randomize</button>
-                            <button id="playPauseBtnIS" class="btn btn-primary py-2 px-4 rounded-lg">Play</button>
-                            <div class="col-span-1 lg:col-span-2 flex items-center gap-3">
-                                <label for="speedSliderIS" class="text-sm text-slate-400">Speed</label>
-                                <input id="speedSliderIS" type="range" min="10" max="200" value="100" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
-                            </div>
-                            <button id="toggleMetricsBtnIS" class="btn btn-secondary py-2 px-4 rounded-lg col-span-1 sm:col-span-2 lg:col-span-4">Show Metrics</button>
-                            <button id="viewArBtnIS" class="btn btn-disabled py-2 px-4 rounded-lg col-span-1 sm:col-span-2 lg:col-span-4" disabled>View in AR (Coming Soon)</button>
+                        <div id="subtitleIS" class="subtitle-display h-12 flex items-center justify-center text-center px-4 mb-4 bg-slate-800/50 border border-slate-700 rounded-lg text-slate-300">
+                            Click Play to start the visualization.
                         </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                            <p class="text-sm font-medium text-center text-slate-400 mb-2">Generate Array</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                <button id="randomizeBtnIS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Random</button>
+                                <button id="nearlySortedBtnIS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Nearly Sorted</button>
+                                <button id="reversedBtnIS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Reversed</button>
+                                <button id="fewUniqueBtnIS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Few Unique</button>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                            <p class="text-sm font-medium text-center text-slate-400 mb-2">Controls</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 items-center">
+                                <button id="playPauseBtnIS" class="btn btn-primary py-2 px-2 rounded-md col-span-1 sm:col-span-1">Play</button>
+                                <div class="col-span-3 sm:col-span-3 flex items-center gap-2">
+                                    <label for="speedSliderIS" class="text-xs text-slate-400">Speed</label>
+                                    <input id="speedSliderIS" type="range" min="10" max="200" value="100" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                        <button id="toggleMetricsBtnIS" class="btn btn-secondary py-2 px-4 rounded-lg">Show Metrics</button>
+                        <button id="viewArBtnIS" class="btn btn-disabled py-2 px-4 rounded-lg" disabled>View in AR (Coming Soon)</button>
+                    </div>
                         <div id="metricsDashboardIS" class="hidden mt-4 bg-slate-800/50 p-4 rounded-lg border border-slate-700">
                              <h4 class="text-lg font-semibold text-white text-center mb-3">Performance Metrics</h4>
                              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
@@ -473,23 +542,24 @@ void selectionSort(std::vector&lt;int&gt;& arr) {
                                     <button id="togglePracticeBtnIS" class="btn btn-secondary text-sm py-1 px-3 rounded-md">Practice Mode</button>
                                 </div>
                                 <div id="codeDisplayIS">
-                                    <pre class="bg-slate-800 rounded-lg p-4 text-sm text-slate-300 overflow-x-auto"><code class="language-cpp">#include &lt;iostream&gt;
-#include &lt;vector&gt;
-
-void insertionSort(std::vector&lt;int&gt;& arr) {
-    int n = arr.size();
-    for (int i = 1; i < n; ++i) {
-        int key = arr[i];
-        int j = i - 1;
-        while (j >= 0 && arr[j] > key) {
-            arr[j + 1] = arr[j];
-            j = j - 1;
-        }
-        arr[j + 1] = key;
-    }
-}
+    <pre class="bg-slate-800 rounded-lg p-4 text-sm text-slate-300 overflow-x-auto"><code class="language-cpp" id="code-block-IS">
+<span id="is-line-1">#include &lt;iostream&gt;</span>
+<span id="is-line-2">#include &lt;vector&gt;</span>
+<span id="is-line-3"></span>
+<span id="is-line-4">void insertionSort(std::vector&lt;int&gt;& arr) {</span>
+<span id="is-line-5">    int n = arr.size();</span>
+<span id="is-line-6">    for (int i = 1; i < n; ++i) {</span>
+<span id="is-line-7">        int key = arr[i];</span>
+<span id="is-line-8">        int j = i - 1;</span>
+<span id="is-line-9">        while (j >= 0 && arr[j] > key) {</span>
+<span id="is-line-10">            arr[j + 1] = arr[j];</span>
+<span id="is-line-11">            j = j - 1;</span>
+<span id="is-line-12">        }</span>
+<span id="is-line-13">        arr[j + 1] = key;</span>
+<span id="is-line-14">    }</span>
+<span id="is-line-15">}</span>
 </code></pre>
-                                </div>
+</div>
                                 <div id="codePracticeIS" class="hidden">
                                     <textarea id="codeInputIS" class="code-editor w-full h-80 rounded-lg p-4 text-sm" placeholder="Type your Insertion Sort code here..."></textarea>
                                     <button id="checkCodeBtnIS" class="btn btn-primary w-full mt-2 py-2">Check Code</button>
@@ -521,16 +591,34 @@ void insertionSort(std::vector&lt;int&gt;& arr) {
                     <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-4 sm:p-6">
                          <h3 class="text-2xl font-bold text-white mb-4">Merge Sort Visualization</h3>
                         <div class="canvas-container mb-4"><canvas id="mergeSortCanvas"></canvas></div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 items-center mb-4">
-                            <button id="randomizeBtnMS" class="btn btn-secondary py-2 px-4 rounded-lg">Randomize</button>
-                            <button id="playPauseBtnMS" class="btn btn-primary py-2 px-4 rounded-lg">Play</button>
-                            <div class="col-span-1 lg:col-span-2 flex items-center gap-3">
-                                <label for="speedSliderMS" class="text-sm text-slate-400">Speed</label>
-                                <input id="speedSliderMS" type="range" min="10" max="200" value="100" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
-                            </div>
-                            <button id="toggleMetricsBtnMS" class="btn btn-secondary py-2 px-4 rounded-lg col-span-1 sm:col-span-2 lg:col-span-4">Show Metrics</button>
-                            <button id="viewArBtnMS" class="btn btn-disabled py-2 px-4 rounded-lg col-span-1 sm:col-span-2 lg:col-span-4" disabled>View in AR (Coming Soon)</button>
+                        <div id="subtitleMS" class="subtitle-display h-12 flex items-center justify-center text-center px-4 mb-4 bg-slate-800/50 border border-slate-700 rounded-lg text-slate-300">
+                            Click Play to start the visualization.
                         </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                            <p class="text-sm font-medium text-center text-slate-400 mb-2">Generate Array</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                <button id="randomizeBtnMS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Random</button>
+                                <button id="nearlySortedBtnMS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Nearly Sorted</button>
+                                <button id="reversedBtnMS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Reversed</button>
+                                <button id="fewUniqueBtnMS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Few Unique</button>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                            <p class="text-sm font-medium text-center text-slate-400 mb-2">Controls</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 items-center">
+                                <button id="playPauseBtnMS" class="btn btn-primary py-2 px-2 rounded-md col-span-1 sm:col-span-1">Play</button>
+                                <div class="col-span-3 sm:col-span-3 flex items-center gap-2">
+                                    <label for="speedSliderMS" class="text-xs text-slate-400">Speed</label>
+                                    <input id="speedSliderMS" type="range" min="10" max="200" value="100" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                        <button id="toggleMetricsBtnMS" class="btn btn-secondary py-2 px-4 rounded-lg">Show Metrics</button>
+                        <button id="viewArBtnMS" class="btn btn-disabled py-2 px-4 rounded-lg" disabled>View in AR (Coming Soon)</button>
+                    </div>
                         <div id="metricsDashboardMS" class="hidden mt-4 bg-slate-800/50 p-4 rounded-lg border border-slate-700">
                              <h4 class="text-lg font-semibold text-white text-center mb-3">Performance Metrics</h4>
                              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
@@ -554,33 +642,34 @@ void insertionSort(std::vector&lt;int&gt;& arr) {
                                     <button id="togglePracticeBtnMS" class="btn btn-secondary text-sm py-1 px-3 rounded-md">Practice Mode</button>
                                 </div>
                                 <div id="codeDisplayMS">
-                                    <pre class="bg-slate-800 rounded-lg p-4 text-sm text-slate-300 overflow-x-auto"><code class="language-cpp">#include &lt;iostream&gt;
-#include &lt;vector&gt;
-
-void merge(std::vector&lt;int&gt;& arr, int l, int m, int r) {
-    // Create temporary arrays
-    std::vector&lt;int&gt; L(arr.begin() + l, arr.begin() + m + 1);
-    std::vector&lt;int&gt; R(arr.begin() + m + 1, arr.begin() + r + 1);
-
-    int i = 0, j = 0, k = l;
-    while (i < L.size() && j < R.size()) {
-        if (L[i] <= R[j]) arr[k++] = L[i++];
-        else arr[k++] = R[j++];
-    }
-    while (i < L.size()) arr[k++] = L[i++];
-    while (j < R.size()) arr[k++] = R[j++];
-}
-
-void mergeSort(std::vector&lt;int&gt;& arr, int l, int r) {
-    if (l < r) {
-        int m = l + (r - l) / 2;
-        mergeSort(arr, l, m);
-        mergeSort(arr, m + 1, r);
-        merge(arr, l, m, r);
-    }
-}
+    <pre class="bg-slate-800 rounded-lg p-4 text-sm text-slate-300 overflow-x-auto"><code class="language-cpp" id="code-block-MS">
+<span id="ms-line-1">#include &lt;iostream&gt;</span>
+<span id="ms-line-2">#include &lt;vector&gt;</span>
+<span id="ms-line-3"></span>
+<span id="ms-line-4">void merge(std::vector&lt;int&gt;& arr, int l, int m, int r) {</span>
+<span id="ms-line-5">    // Create temporary arrays</span>
+<span id="ms-line-6">    std::vector&lt;int&gt; L(arr.begin() + l, arr.begin() + m + 1);</span>
+<span id="ms-line-7">    std::vector&lt;int&gt; R(arr.begin() + m + 1, arr.begin() + r + 1);</span>
+<span id="ms-line-8"></span>
+<span id="ms-line-9">    int i = 0, j = 0, k = l;</span>
+<span id="ms-line-10">    while (i < L.size() && j < R.size()) {</span>
+<span id="ms-line-11">        if (L[i] <= R[j]) arr[k++] = L[i++];</span>
+<span id="ms-line-12">        else arr[k++] = R[j++];</span>
+<span id="ms-line-13">    }</span>
+<span id="ms-line-14">    while (i < L.size()) arr[k++] = L[i++];</span>
+<span id="ms-line-15">    while (j < R.size()) arr[k++] = R[j++];</span>
+<span id="ms-line-16">}</span>
+<span id="ms-line-17"></span>
+<span id="ms-line-18">void mergeSort(std::vector&lt;int&gt;& arr, int l, int r) {</span>
+<span id="ms-line-19">    if (l < r) {</span>
+<span id="ms-line-20">        int m = l + (r - l) / 2;</span>
+<span id="ms-line-21">        mergeSort(arr, l, m);</span>
+<span id="ms-line-22">        mergeSort(arr, m + 1, r);</span>
+<span id="ms-line-23">        merge(arr, l, m, r);</span>
+<span id="ms-line-24">    }</span>
+<span id="ms-line-25">}</span>
 </code></pre>
-                                </div>
+</div>
                                 <div id="codePracticeMS" class="hidden">
                                     <textarea id="codeInputMS" class="code-editor w-full h-96 rounded-lg p-4 text-sm" placeholder="Type your Merge Sort code here..."></textarea>
                                     <button id="checkCodeBtnMS" class="btn btn-primary w-full mt-2 py-2">Check Code</button>
@@ -612,16 +701,34 @@ void mergeSort(std::vector&lt;int&gt;& arr, int l, int r) {
                     <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-4 sm:p-6">
                         <h3 class="text-2xl font-bold text-white mb-4">Quick Sort Visualization</h3>
                         <div class="canvas-container mb-4"><canvas id="quickSortCanvas"></canvas></div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 items-center mb-4">
-                            <button id="randomizeBtnQS" class="btn btn-secondary py-2 px-4 rounded-lg">Randomize</button>
-                            <button id="playPauseBtnQS" class="btn btn-primary py-2 px-4 rounded-lg">Play</button>
-                            <div class="col-span-1 lg:col-span-2 flex items-center gap-3">
-                                <label for="speedSliderQS" class="text-sm text-slate-400">Speed</label>
-                                <input id="speedSliderQS" type="range" min="10" max="200" value="100" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
-                            </div>
-                            <button id="toggleMetricsBtnQS" class="btn btn-secondary py-2 px-4 rounded-lg col-span-1 sm:col-span-2 lg:col-span-4">Show Metrics</button>
-                            <button id="viewArBtnQS" class="btn btn-disabled py-2 px-4 rounded-lg col-span-1 sm:col-span-2 lg:col-span-4" disabled>View in AR (Coming Soon)</button>
+                        <div id="subtitleQS" class="subtitle-display h-12 flex items-center justify-center text-center px-4 mb-4 bg-slate-800/50 border border-slate-700 rounded-lg text-slate-300">
+                            Click Play to start the visualization.
                         </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                            <p class="text-sm font-medium text-center text-slate-400 mb-2">Generate Array</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                <button id="randomizeBtnQS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Random</button>
+                                <button id="nearlySortedBtnQS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Nearly Sorted</button>
+                                <button id="reversedBtnQS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Reversed</button>
+                                <button id="fewUniqueBtnQS" class="btn btn-secondary text-xs py-2 px-2 rounded-md">Few Unique</button>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                            <p class="text-sm font-medium text-center text-slate-400 mb-2">Controls</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 items-center">
+                                <button id="playPauseBtnQS" class="btn btn-primary py-2 px-2 rounded-md col-span-1 sm:col-span-1">Play</button>
+                                <div class="col-span-3 sm:col-span-3 flex items-center gap-2">
+                                    <label for="speedSliderQS" class="text-xs text-slate-400">Speed</label>
+                                    <input id="speedSliderQS" type="range" min="10" max="200" value="100" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                        <button id="toggleMetricsBtnQS" class="btn btn-secondary py-2 px-4 rounded-lg">Show Metrics</button>
+                        <button id="viewArBtnQS" class="btn btn-disabled py-2 px-4 rounded-lg" disabled>View in AR (Coming Soon)</button>
+                    </div>
                         <div id="metricsDashboardQS" class="hidden mt-4 bg-slate-800/50 p-4 rounded-lg border border-slate-700">
                             <h4 class="text-lg font-semibold text-white text-center mb-3">Performance Metrics</h4>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
@@ -645,32 +752,33 @@ void mergeSort(std::vector&lt;int&gt;& arr, int l, int r) {
                                     <button id="togglePracticeBtnQS" class="btn btn-secondary text-sm py-1 px-3 rounded-md">Practice Mode</button>
                                 </div>
                                 <div id="codeDisplayQS">
-                                    <pre class="bg-slate-800 rounded-lg p-4 text-sm text-slate-300 overflow-x-auto"><code class="language-cpp">#include &lt;iostream&gt;
-#include &lt;vector&gt;
-#include &lt;utility&gt;
-
-int partition(std::vector&lt;int&gt;& arr, int low, int high) {
-    int pivot = arr[high];
-    int i = (low - 1);
-    for (int j = low; j <= high - 1; j++) {
-        if (arr[j] < pivot) {
-            i++;
-            std::swap(arr[i], arr[j]);
-        }
-    }
-    std::swap(arr[i + 1], arr[high]);
-    return (i + 1);
-}
-
-void quickSort(std::vector&lt;int&gt;& arr, int low, int high) {
-    if (low < high) {
-        int pi = partition(arr, low, high);
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
-    }
-}
+    <pre class="bg-slate-800 rounded-lg p-4 text-sm text-slate-300 overflow-x-auto"><code class="language-cpp" id="code-block-QS">
+<span id="qs-line-1">#include &lt;iostream&gt;</span>
+<span id="qs-line-2">#include &lt;vector&gt;</span>
+<span id="qs-line-3">#include &lt;utility&gt;</span>
+<span id="qs-line-4"></span>
+<span id="qs-line-5">int partition(std::vector&lt;int&gt;& arr, int low, int high) {</span>
+<span id="qs-line-6">    int pivot = arr[high];</span>
+<span id="qs-line-7">    int i = (low - 1);</span>
+<span id="qs-line-8">    for (int j = low; j <= high - 1; j++) {</span>
+<span id="qs-line-9">        if (arr[j] < pivot) {</span>
+<span id="qs-line-10">            i++;</span>
+<span id="qs-line-11">            std::swap(arr[i], arr[j]);</span>
+<span id="qs-line-12">        }</span>
+<span id="qs-line-13">    }</span>
+<span id="qs-line-14">    std::swap(arr[i + 1], arr[high]);</span>
+<span id="qs-line-15">    return (i + 1);</span>
+<span id="qs-line-16">}</span>
+<span id="qs-line-17"></span>
+<span id="qs-line-18">void quickSort(std::vector&lt;int&gt;& arr, int low, int high) {</span>
+<span id="qs-line-19">    if (low < high) {</span>
+<span id="qs-line-20">        int pi = partition(arr, low, high);</span>
+<span id="qs-line-21">        quickSort(arr, low, pi - 1);</span>
+<span id="qs-line-22">        quickSort(arr, pi + 1, high);</span>
+<span id="qs-line-23">    }</span>
+<span id="qs-line-24">}</span>
 </code></pre>
-                                </div>
+</div>
                                 <div id="codePracticeQS" class="hidden">
                                     <textarea id="codeInputQS" class="code-editor w-full h-96 rounded-lg p-4 text-sm" placeholder="Type your Quick Sort code here..."></textarea>
                                     <button id="checkCodeBtnQS" class="btn btn-primary w-full mt-2 py-2">Check Code</button>
@@ -797,6 +905,12 @@ void quickSort(std::vector&lt;int&gt;& arr, int low, int high) {
                     <div id="comparison-results-container" class="hidden">
                         <h3 class="text-2xl font-bold text-white mb-4 text-center">Race Results</h3>
                         <div id="comparison-results" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+                        <div class="mt-8">
+                            <h3 class="text-2xl font-bold text-white mb-4 text-center">Theoretical Time Complexity</h3>
+                            <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700 h-64 md:h-80">
+                                <canvas id="complexityChart"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -853,56 +967,101 @@ void quickSort(std::vector&lt;int&gt;& arr, int low, int high) {
             };
 
             class AlgorithmVisualizer {
-                constructor(canvasId, generatorFn, name = '', idSuffix = '') {
-                    this.canvas = document.getElementById(canvasId);
-                    if (!this.canvas) return;
-                    this.ctx = this.canvas.getContext('2d');
-                    this.generatorFn = generatorFn;
-                    this.name = name;
-                    this.idSuffix = idSuffix;
+            constructor(canvasId, generatorFn, name = '', idSuffix = '') {
+                this.canvas = document.getElementById(canvasId);
+                if (!this.canvas) return;
+                this.ctx = this.canvas.getContext('2d');
+                this.generatorFn = generatorFn;
+                this.name = name;
+                this.idSuffix = idSuffix;
 
-                    this.array = [];
-                    this.isSorting = false;
-                    this.sortGenerator = null;
-                    this.animationFrameId = null;
-                    this.isInitialized = false;
-                    this.onComplete = () => {};
+                this.subtitleElement = null;
 
-                    this.metrics = { comparisons: 0, swaps: 0 };
-                    this.chart = null;
-                    this.timerInterval = null;
-                    this.startTime = 0;
-                    this.pausedTime = 0;
-                }
+                this.array = [];
+                this.isSorting = false;
+                this.sortGenerator = null;
+                this.animationFrameId = null;
+                this.isInitialized = false;
+                this.onComplete = () => {};
 
-                init(isComparison = false) {
-                     if (this.isInitialized && !isComparison) {
-                        this.resizeCanvas();
-                        return;
-                    }
-                    this.isInitialized = true;
+                this.metrics = { comparisons: 0, swaps: 0 };
+                this.chart = null;
+                this.timerInterval = null;
+                this.startTime = 0;
+                this.pausedTime = 0;
+                this.highlightedLineElement = null; // Added new property
+            }
+
+            init(isComparison = false) {
+                if (this.isInitialized && !isComparison) {
                     this.resizeCanvas();
-                    if(!isComparison) {
-                        this.createRandomArray();
-                        this.initChart();
-                    }
-                    window.addEventListener('resize', () => this.resizeCanvas());
+                    return;
                 }
+                this.isInitialized = true;
+                this.resizeCanvas();
+                if (!isComparison) {
+                    this.createRandomArray();
+                    this.initChart();
+                }
+                window.addEventListener('resize', () => this.resizeCanvas());
+            }
+
+            highlightLine(lineId) {
+                // Remove highlight from the previous line
+                if (this.highlightedLineElement) {
+                    this.highlightedLineElement.classList.remove('line-highlight');
+                }
+
+                // If a new lineId is provided, highlight it
+                if (lineId) {
+                    const newLineElement = document.getElementById(lineId);
+                    if (newLineElement) {
+                        newLineElement.classList.add('line-highlight');
+                        this.highlightedLineElement = newLineElement;
+                    }
+                } else {
+                    this.highlightedLineElement = null; // Clear if no lineId
+                }
+            }
+        
                 
-                attachEventListeners(randomizeBtnId, playPauseBtnId, speedSliderId, customInputId, applyBtnId, errorMsgId, toggleMetricsBtnId, metricsDashboardId) {
-                    this.randomizeBtn = document.getElementById(randomizeBtnId);
-                    this.playPauseBtn = document.getElementById(playPauseBtnId);
-                    this.speedSlider = document.getElementById(speedSliderId);
-                    this.customInput = document.getElementById(customInputId);
-                    this.applyBtn = document.getElementById(applyBtnId);
-                    this.errorMsg = document.getElementById(errorMsgId);
-                    this.toggleMetricsBtn = document.getElementById(toggleMetricsBtnId);
-                    this.metricsDashboard = document.getElementById(metricsDashboardId);
+                // Replace the old attachEventListeners method with this one
+                attachEventListeners(ids) {
+                    this.randomizeBtn = document.getElementById(ids.randomizeBtnId);
+                    this.playPauseBtn = document.getElementById(ids.playPauseBtnId);
+                    this.speedSlider = document.getElementById(ids.speedSliderId);
+                    this.customInput = document.getElementById(ids.customInputId);
+                    this.applyBtn = document.getElementById(ids.applyBtnId);
+                    this.errorMsg = document.getElementById(ids.errorMsgId);
+                    this.toggleMetricsBtn = document.getElementById(ids.toggleMetricsBtnId);
+                    this.metricsDashboard = document.getElementById(ids.metricsDashboardId);
+                    this.subtitleElement = document.getElementById(ids.subtitleId); 
+                    
+                    // New buttons
+                    this.nearlySortedBtn = document.getElementById(ids.nearlySortedBtnId);
+                    this.reversedBtn = document.getElementById(ids.reversedBtnId);
+                    this.fewUniqueBtn = document.getElementById(ids.fewUniqueBtnId);
 
                     this.randomizeBtn.addEventListener('click', () => this.createRandomArray());
                     this.playPauseBtn.addEventListener('click', () => this.toggleSort());
                     this.applyBtn.addEventListener('click', () => this.applyCustomArray());
                     this.toggleMetricsBtn.addEventListener('click', () => this.toggleMetrics());
+                    
+                    // New event listeners
+                    this.nearlySortedBtn.addEventListener('click', () => this.createNearlySortedArray());
+                    this.reversedBtn.addEventListener('click', () => this.createReversedArray());
+                    this.fewUniqueBtn.addEventListener('click', () => this.createFewUniqueArray());
+                }
+
+                updateSubtitle(text) {
+                    if (!this.subtitleElement || this.subtitleElement.textContent === text) return;
+
+                    // Use a fade effect for smooth transitions
+                    this.subtitleElement.classList.add('fade');
+                    setTimeout(() => {
+                        this.subtitleElement.textContent = text;
+                        this.subtitleElement.classList.remove('fade');
+                    }, 300); // This delay should match your CSS transition time
                 }
 
                 toggleMetrics() {
@@ -911,7 +1070,7 @@ void quickSort(std::vector&lt;int&gt;& arr, int low, int high) {
                 }
                 
                 getAnimationSpeed() {
-                    return this.speedSlider ? 210 - parseInt(this.speedSlider.value, 10) : 50;
+                    return this.speedSlider ? 3000 - (parseInt(this.speedSlider.value, 10) * 15) : 50;
                 }
 
                 toggleSort() {
@@ -948,6 +1107,9 @@ void quickSort(std::vector&lt;int&gt;& arr, int low, int high) {
                     this.array.forEach(el => el.color = colors.bar);
                     this.drawArray();
                     this.resetMetrics();
+                    
+                    // ADD THIS LINE TO CLEAR HIGHLIGHT ON RESET
+                    this.highlightLine(null); 
                 }
 
                 resetMetrics() {
@@ -1005,6 +1167,7 @@ void quickSort(std::vector&lt;int&gt;& arr, int low, int high) {
                         return;
                     }
 
+                    this.updateSubtitle('Custom array applied. Click Play to sort.');
                     this.errorMsg.classList.add('hidden');
                     const valueArray = newArray.map(value => ({ value, color: colors.bar }));
                     this.setArray(valueArray);
@@ -1033,6 +1196,57 @@ void quickSort(std::vector&lt;int&gt;& arr, int low, int high) {
                         });
                     }
                     this.setArray(newArray);
+                    this.updateSubtitle('Generated a new random array. Click Play to sort.');
+                }
+
+                // Add these three methods inside the AlgorithmVisualizer class
+
+                createNearlySortedArray() {
+                    if(this.customInput) this.customInput.value = '';
+                    if(this.errorMsg) this.errorMsg.classList.add('hidden');
+                    
+                    let newArray = [];
+                    for (let i = 0; i < 20; i++) {
+                        newArray.push({ value: (i + 1) * 4 + Math.floor(Math.random() * 5), color: colors.bar });
+                    }
+                    // Introduce a few swaps to make it "nearly" sorted
+                    let swaps = 3;
+                    for(let i = 0; i < swaps; i++) {
+                        let idx1 = Math.floor(Math.random() * newArray.length);
+                        let idx2 = Math.floor(Math.random() * newArray.length);
+                        [newArray[idx1], newArray[idx2]] = [newArray[idx2], newArray[idx1]];
+                    }
+
+                    this.setArray(newArray);
+                    this.updateSubtitle('Nearly sorted array. Best-case for Bubble/Insertion Sort!');
+                }
+
+                createReversedArray() {
+                    if(this.customInput) this.customInput.value = '';
+                    if(this.errorMsg) this.errorMsg.classList.add('hidden');
+                    
+                    let newArray = [];
+                    for (let i = 0; i < 20; i++) {
+                        newArray.push({ value: (i + 1) * 4 + Math.floor(Math.random() * 5), color: colors.bar });
+                    }
+                    newArray.reverse(); // Reverse the sorted array
+
+                    this.setArray(newArray);
+                    this.updateSubtitle('Reversed array. Worst-case for some O(n²) sorts!');
+                }
+
+                createFewUniqueArray() {
+                    if(this.customInput) this.customInput.value = '';
+                    if(this.errorMsg) this.errorMsg.classList.add('hidden');
+                    
+                    const uniqueValues = [15, 30, 60, 90];
+                    let newArray = [];
+                    for (let i = 0; i < 20; i++) {
+                        newArray.push({ value: uniqueValues[Math.floor(Math.random() * uniqueValues.length)], color: colors.bar });
+                    }
+
+                    this.setArray(newArray);
+                    this.updateSubtitle('Array with many duplicates.');
                 }
 
                 drawArray() {
@@ -1101,20 +1315,31 @@ void quickSort(std::vector&lt;int&gt;& arr, int low, int high) {
                     }
 
                     const result = this.sortGenerator.next();
-                     if (result.value) {
+                    
+                    if (result.value) {
                         if (result.value.comparison) this.metrics.comparisons++;
                         if (result.value.swap) this.metrics.swaps++;
+                        if (result.value.subtitle) {
+                            this.updateSubtitle(result.value.subtitle);
+                        }
+                        // ADD THIS BLOCK TO CHECK FOR A LINE TO HIGHLIGHT
+                        if (result.value.line) {
+                            this.highlightLine(result.value.line);
+                        }
                         if (this.idSuffix) this.updateMetricsDisplay();
                     }
-                    this.drawArray();
+                            
+                        this.drawArray();
 
                     if (result.done) {
                         this.isSorting = false;
                         clearInterval(this.timerInterval);
                         if(this.playPauseBtn) this.playPauseBtn.textContent = 'Play';
                         this.sortGenerator = null;
+                        this.updateSubtitle('Sorting Complete!');
                         this.array.forEach(el => el.color = colors.sorted);
                         this.drawArray();
+                        this.highlightLine(null);
                         this.onComplete();
 
                     } else {
@@ -1131,187 +1356,253 @@ void quickSort(std::vector&lt;int&gt;& arr, int low, int high) {
                 let n = arr.length;
                 let swapped;
                 for (let i = 0; i < n - 1; i++) {
+                    yield { subtitle: `Starting Pass ${i + 1}.`, line: 'bs-line-8' };
                     swapped = false;
+                    yield { line: 'bs-line-9' };
+
                     for (let j = 0; j < n - i - 1; j++) {
+                        yield { line: 'bs-line-10' };
                         arr[j].color = colors.compare;
                         arr[j + 1].color = colors.compare;
-                        yield { comparison: true };
+                        yield { comparison: true, subtitle: `Comparing ${arr[j].value} and ${arr[j+1].value}.`, line: 'bs-line-11' };
 
                         if (arr[j].value > arr[j + 1].value) {
-                            yield { swap: true };
+                            yield { subtitle: `${arr[j].value} > ${arr[j+1].value}, so swap.`, line: 'bs-line-11' };
                             [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+                            yield { line: 'bs-line-12' };
                             swapped = true;
                             arr[j+1].color = colors.swap;
+                            yield { swap: true, subtitle: 'Elements swapped.', line: 'bs-line-13' };
                         }
                         
-                        yield;
                         arr[j].color = colors.bar;
                         arr[j + 1].color = colors.bar;
                     }
                     arr[n - 1 - i].color = colors.sorted;
-                    if (!swapped) break;
+                    yield { subtitle: `End of Pass ${i + 1}. Element ${arr[n - 1 - i].value} is sorted.` };
+                    
+                    yield { line: 'bs-line-16' };
+                    if (!swapped) {
+                        yield { subtitle: 'No swaps made. Array is sorted.', line: 'bs-line-17' };
+                        break;
+                    }
                 }
                 for (let i = 0; i < n; i++) {
                     if (arr[i].color !== colors.sorted) arr[i].color = colors.sorted;
                 }
             }
 
-            function* selectionSortGenerator(arr) {
-                let n = arr.length;
-                for (let i = 0; i < n - 1; i++) {
-                    let min_idx = i;
-                    arr[i].color = colors.min;
-                    
-                    for (let j = i + 1; j < n; j++) {
-                        arr[j].color = colors.compare;
-                        yield { comparison: true };
+function* selectionSortGenerator(arr) {
+    let n = arr.length;
+    for (let i = 0; i < n - 1; i++) {
+        yield { subtitle: `Pass ${i + 1}: Find the minimum in the unsorted section.`, line: 'ss-line-7' };
+        let min_idx = i;
+        arr[i].color = colors.min;
+        yield { line: 'ss-line-8' };
+        
+        for (let j = i + 1; j < n; j++) {
+            yield { line: 'ss-line-9' };
+            arr[j].color = colors.compare;
+            yield { comparison: true, subtitle: `Comparing current minimum (${arr[min_idx].value}) with ${arr[j].value}.`, line: 'ss-line-10' };
 
-                        if (arr[j].value < arr[min_idx].value) {
-                             if(min_idx !== i) arr[min_idx].color = colors.bar;
-                             min_idx = j;
-                             arr[min_idx].color = colors.min;
-                        } else {
-                             arr[j].color = colors.bar;
-                        }
-                        yield;
-                    }
-                    
-                    if (min_idx != i) {
-                        arr[i].color = colors.swap;
-                        arr[min_idx].color = colors.swap;
-                        yield { swap: true };
-                        [arr[i], arr[min_idx]] = [arr[min_idx], arr[i]];
-                    }
-
-                    if (min_idx !== i) arr[min_idx].color = colors.bar;
-                    arr[i].color = colors.sorted;
-                    yield;
-                }
-                if (n > 0) arr[n - 1].color = colors.sorted;
+            if (arr[j].value < arr[min_idx].value) {
+                let old_min_val = arr[min_idx].value;
+                if(min_idx !== i) arr[min_idx].color = colors.bar;
+                min_idx = j;
+                arr[min_idx].color = colors.min;
+                yield { subtitle: `New minimum is ${arr[min_idx].value}.`, line: 'ss-line-11' };
+            } else {
+                arr[j].color = colors.bar;
             }
+        }
+        
+        if (min_idx != i) {
+            yield { subtitle: `Swapping minimum (${arr[min_idx].value}) with first unsorted element (${arr[i].value}).`, line: 'ss-line-14' };
+            arr[i].color = colors.swap;
+            arr[min_idx].color = colors.swap;
+            yield { swap: true, line: 'ss-line-15' };
+            [arr[i], arr[min_idx]] = [arr[min_idx], arr[i]];
+        }
 
-            function* insertionSortGenerator(arr) {
-                let n = arr.length;
-                if (n > 0) arr[0].color = colors.sorted;
-                for (let i = 1; i < n; i++) {
-                    let key = arr[i];
-                    let j = i - 1;
-                    key.color = colors.min;
-                    yield;
-                    
-                    let comparisonMade = false;
-                    while (j >= 0) {
-                        yield { comparison: true };
-                        if(arr[j].value > key.value) {
-                            arr[j].color = colors.compare;
-                            yield;
-                            arr[j + 1] = arr[j];
-                            yield { swap: true }; // Counting shifts as "swaps" for metrics
-                            arr[j].color = colors.sorted;
-                            j = j - 1;
-                        } else {
-                            break;
-                        }
-                    }
-                    arr[j + 1] = key;
-                    yield { swap: true };
-                    
-                    for(let k=0; k<=i; k++) arr[k].color = colors.sorted;
-                    yield;
-                }
-            }
+        if (min_idx !== i) arr[min_idx].color = colors.bar;
+        arr[i].color = colors.sorted;
+        yield { subtitle: `Element ${arr[i].value} is now in its correct sorted position.` };
+    }
+    if (n > 0) arr[n - 1].color = colors.sorted;
+}
+
+
+function* insertionSortGenerator(arr) {
+    let n = arr.length;
+    if (n > 0) arr[0].color = colors.sorted;
+    yield { subtitle: `First element ${arr[0].value} is already sorted.`, line: 'is-line-5' };
+
+    for (let i = 1; i < n; i++) {
+        yield { line: 'is-line-6' };
+        let key = arr[i];
+        let j = i - 1;
+        key.color = colors.min;
+        yield { subtitle: `Picking ${key.value} as the 'key' to insert.`, line: 'is-line-7' };
+        yield { line: 'is-line-8' };
+        
+        let shifted = false;
+        while (j >= 0 && arr[j].value > key.value) {
+            yield { line: 'is-line-9' };
+            arr[j].color = colors.compare;
+            yield { comparison: true, subtitle: `Key (${key.value}) < ${arr[j].value}. Shifting ${arr[j].value} to the right.` };
+            arr[j + 1] = arr[j];
+            yield { swap: true, line: 'is-line-10' };
+            arr[j].color = colors.sorted;
+            j = j - 1;
+            shifted = true;
+            yield { line: 'is-line-11' };
+        }
+        arr[j + 1] = key;
+        yield { 
+            swap: true, 
+            subtitle: shifted ? `Inserting key (${key.value}) into its correct position.` : `Key (${key.value}) is already in the correct position.`, 
+            line: 'is-line-13'
+        };
+        
+        for (let k = 0; k <= i; k++) arr[k].color = colors.sorted;
+        yield;
+    }
+}
+
             
             function* mergeSortGenerator(arr, l, r) {
-                if (l >= r) {
-                    if (l < arr.length) arr[l].color = colors.sorted;
-                    return;
-                }
-                const m = Math.floor(l + (r - l) / 2);
-                yield* mergeSortGenerator(arr, l, m);
-                yield* mergeSortGenerator(arr, m + 1, r);
-                yield* merge(arr, l, m, r);
-            }
+    yield { line: 'ms-line-18' };
+    if (l >= r) {
+        if (l < arr.length) {
+            arr[l].color = colors.sorted;
+            yield { subtitle: `Base Case: Sub-array with one element (${arr[l].value}) is sorted.`, line: 'ms-line-19' };
+        }
+        return;
+    }
 
-            function* merge(arr, l, m, r) {
-                let n1 = m - l + 1;
-                let n2 = r - m;
-                let L = new Array(n1);
-                let R = new Array(n2);
+    yield { line: 'ms-line-20' };
+    const m = Math.floor(l + (r - l) / 2);
 
-                for (let i = 0; i < n1; i++) L[i] = arr[l + i];
-                for (let j = 0; j < n2; j++) R[j] = arr[m + 1 + j];
+    yield { subtitle: `Divide: Splitting array into [${l}…${m}] and [${m + 1}…${r}].`, line: 'ms-line-21' };
+    yield* mergeSortGenerator(arr, l, m);
 
-                let i = 0, j = 0, k = l;
-                while (i < n1 && j < n2) {
-                    arr[l + i].color = colors.compare;
-                    arr[m + 1 + j].color = colors.compare;
-                    yield { comparison: true };
-                    
-                    if (L[i].value <= R[j].value) {
-                        arr[k] = L[i];
-                        i++;
-                    } else {
-                        arr[k] = R[j];
-                        j++;
-                    }
-                    arr[k].color = colors.sorted;
-                    yield { swap: true }; // Counting array writes as "swaps" for metrics
-                    k++;
-                }
-                while (i < n1) {
-                    arr[k] = L[i];
-                    arr[k].color = colors.sorted;
-                    i++; k++;
-                    yield { swap: true };
-                }
-                while (j < n2) {
-                    arr[k] = R[j];
-                    arr[k].color = colors.sorted;
-                    j++; k++;
-                    yield { swap: true };
-                }
-                 for(let z=l; z<=r; z++) arr[z].color = colors.sorted;
-                 yield;
-            }
+    yield { line: 'ms-line-22' };
+    yield* mergeSortGenerator(arr, m + 1, r);
+
+    yield { subtitle: `Conquer: Merging the sections from index ${l} to ${r}.`, line: 'ms-line-23' };
+    yield* merge(arr, l, m, r);
+}
+
+function* merge(arr, l, m, r) {
+    let n1 = m - l + 1;
+    let n2 = r - m;
+    let L = new Array(n1);
+    let R = new Array(n2);
+
+    yield { subtitle: `Preparing temporary arrays for merging.`, line: 'ms-line-6' };
+
+    for (let i = 0; i < n1; i++) L[i] = arr[l + i];
+    for (let j = 0; j < n2; j++) R[j] = arr[m + 1 + j];
+    yield { line: 'ms-line-7' };
+
+    let i = 0, j = 0, k = l;
+    yield { line: 'ms-line-9' };
+
+    while (i < n1 && j < n2) {
+        yield { line: 'ms-line-10' };
+        arr[l + i].color = colors.compare;
+        arr[m + 1 + j].color = colors.compare;
+        yield { comparison: true, subtitle: `Comparing ${L[i].value} (left) and ${R[j].value} (right).`, line: 'ms-line-11' };
+
+        if (L[i].value <= R[j].value) {
+            arr[k] = L[i];
+            yield { swap: true, subtitle: `Taking ${L[i].value} from the left half.`, line: 'ms-line-11' };
+            i++;
+        } else {
+            arr[k] = R[j];
+            yield { swap: true, subtitle: `Taking ${R[j].value} from the right half.`, line: 'ms-line-12' };
+            j++;
+        }
+        arr[k].color = colors.sorted;
+        k++;
+    }
+    
+    yield { line: 'ms-line-14' };
+    while (i < n1) {
+        arr[k] = L[i]; arr[k].color = colors.sorted; i++; k++;
+        yield { swap: true, subtitle: 'Copying remaining elements from the left half.' };
+    }
+
+    yield { line: 'ms-line-15' };
+    while (j < n2) {
+        arr[k] = R[j]; arr[k].color = colors.sorted; j++; k++;
+        yield { swap: true, subtitle: 'Copying remaining elements from the right half.' };
+    }
+
+    yield { subtitle: `The section from index ${l} to ${r} is now fully merged and sorted.` };
+}
+
             
             function* quickSortGenerator(arr, low, high) {
-                if (low < high) {
-                    const pi = yield* partition(arr, low, high);
-                    arr[pi].color = colors.sorted;
-                    yield;
-                    yield* quickSortGenerator(arr, low, pi - 1);
-                    yield* quickSortGenerator(arr, pi + 1, high);
-                } else {
-                    if(low >= 0 && low < arr.length) arr[low].color = colors.sorted;
-                }
-            }
+    yield { line: 'qs-line-18' };
+    if (low < high) {
+        yield { line: 'qs-line-19' };
+        yield { line: 'qs-line-20' };
+        const pi = yield* partition(arr, low, high);
+        arr[pi].color = colors.sorted;
+        yield { subtitle: `Pivot ${arr[pi].value} is now sorted. Recursively sorting left and right partitions.` };
 
-            function* partition(arr, low, high) {
-                let pivot = arr[high];
-                pivot.color = colors.pivot;
-                let i = low - 1;
-                for (let j = low; j < high; j++) {
-                    arr[j].color = colors.compare;
-                    yield { comparison: true };
-                    if (arr[j].value < pivot.value) {
-                        i++;
-                        arr[i].color = colors.swap;
-                        arr[j].color = colors.swap;
-                        yield { swap: true };
-                        [arr[i], arr[j]] = [arr[j], arr[i]];
-                        arr[i].color = colors.bar;
-                    }
-                    arr[j].color = colors.bar;
-                }
+        yield { line: 'qs-line-21' };
+        yield* quickSortGenerator(arr, low, pi - 1);
+        
+        yield { line: 'qs-line-22' };
+        yield* quickSortGenerator(arr, pi + 1, high);
+    } else {
+        if (low >= 0 && low < arr.length) {
+            arr[low].color = colors.sorted;
+            yield { subtitle: `Element ${arr[low].value} is sorted (base case).` };
+        }
+    }
+}
 
-                arr[i+1].color = colors.swap;
-                arr[high].color = colors.swap;
-                yield { swap: true };
-                [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
-                pivot.color = colors.bar;
+function* partition(arr, low, high) {
+    yield { line: 'qs-line-5' };
+    let pivot = arr[high];
+    pivot.color = colors.pivot;
+    yield { subtitle: `PARTITION: Using ${pivot.value} as the pivot.`, line: 'qs-line-6' };
 
-                return i + 1;
-            }
+    let i = low - 1;
+    yield { line: 'qs-line-7' };
+
+    for (let j = low; j < high; j++) {
+        yield { line: 'qs-line-8' };
+        arr[j].color = colors.compare;
+        yield { comparison: true, subtitle: `Comparing ${arr[j].value} with pivot ${pivot.value}.`, line: 'qs-line-9' };
+
+        if (arr[j].value < pivot.value) {
+            i++;
+            yield { subtitle: `${arr[j].value} is smaller. Swapping with element at index ${i}.`, line: 'qs-line-10' };
+            arr[i].color = colors.swap;
+            arr[j].color = colors.swap;
+            yield { swap: true, line: 'qs-line-11' };
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+            arr[i].color = colors.bar;
+            yield { line: 'qs-line-12' };
+        }
+        arr[j].color = colors.bar;
+    }
+    
+    yield { subtitle: 'Moving pivot to its final sorted position.', line: 'qs-line-14' };
+    arr[i + 1].color = colors.swap;
+    arr[high].color = colors.swap;
+    yield { swap: true, line: 'qs-line-14' };
+    [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
+    pivot.color = colors.bar;
+
+    yield { subtitle: `Pivot ${arr[i + 1].value} placed at index ${i + 1}.`, line: 'qs-line-15' };
+    return i + 1;
+}
+
 
             // --- Quiz Class ---
             class Quiz {
@@ -1538,11 +1829,12 @@ void quickSort(std::vector&lt;int&gt;& arr, int low, int high) {
             ];
 
             const ALGORITHMS = {
-                'bubble-sort': { 
-                    name: 'Bubble Sort', 
-                    generator: bubbleSortGenerator, 
-                    pros: ['Simple to understand', 'O(n) best case'], 
+                'bubble-sort': {
+                    name: 'Bubble Sort',
+                    generator: bubbleSortGenerator,
+                    pros: ['Simple to understand', 'O(n) best case'],
                     cons: ['Very slow O(n^2) average/worst case'],
+                    complexity: 'O(n²)', // Add this line
                     code: `
 #include <iostream>
 #include <vector>
@@ -1566,10 +1858,11 @@ void bubbleSort(std::vector<int>& arr) {
 }`
                 },
                 'selection-sort': { 
-                    name: 'Selection Sort', 
-                    generator: selectionSortGenerator, 
-                    pros: ['Simple', 'Minimal swaps (n-1)'], 
+                    name: 'Selection Sort',
+                    generator: selectionSortGenerator,
+                    pros: ['Simple', 'Minimal swaps (n-1)'],
                     cons: ['O(n^2) in all cases'],
+                    complexity: 'O(n²)', // Add this line
                     code: `
 #include <iostream>
 #include <vector>
@@ -1591,10 +1884,11 @@ void selectionSort(std::vector<int>& arr) {
 }`
                 },
                 'insertion-sort': { 
-                    name: 'Insertion Sort', 
-                    generator: insertionSortGenerator, 
-                    pros: ['Efficient on small or nearly-sorted data', 'Stable'], 
+                    name: 'Insertion Sort',
+                    generator: insertionSortGenerator,
+                    pros: ['Efficient on small or nearly-sorted data', 'Stable'],
                     cons: ['O(n^2) average/worst case'],
+                    complexity: 'O(n²)', // Add this line
                     code: `
 #include <iostream>
 #include <vector>
@@ -1613,10 +1907,11 @@ void insertionSort(std::vector<int>& arr) {
 }`
                 },
                 'merge-sort': { 
-                    name: 'Merge Sort', 
-                    generator: mergeSortGenerator, 
-                    pros: ['Guaranteed O(n log n)', 'Stable'], 
+                    name: 'Merge Sort',
+                    generator: mergeSortGenerator,
+                    pros: ['Guaranteed O(n log n)', 'Stable'],
                     cons: ['Requires O(n) extra space'],
+                    complexity: 'O(n log n)', // Add this line
                     code: `
 #include <iostream>
 #include <vector>
@@ -1644,10 +1939,11 @@ void mergeSort(std::vector<int>& arr, int l, int r) {
 }`
                 },
                 'quick-sort': { 
-                    name: 'Quick Sort', 
-                    generator: quickSortGenerator, 
-                    pros: ['Very fast on average O(n log n)', 'In-place (O(log n) space)'], 
+                    name: 'Quick Sort',
+                    generator: quickSortGenerator,
+                    pros: ['Very fast on average O(n log n)', 'In-place (O(log n) space)'],
                     cons: ['O(n^2) worst case', 'Not stable'],
+                    complexity: 'O(n log n)', // Add this line
                     code: `
 #include <iostream>
 #include <vector>
@@ -1691,11 +1987,26 @@ void quickSort(std::vector<int>& arr, int low, int high) {
                 'quick-sort': new AlgorithmVisualizer('quickSortCanvas', ALGORITHMS['quick-sort'].generator, 'Quick Sort', 'QS')
             };
             
-            singleVisualizers['bubble-sort'].attachEventListeners('randomizeBtnBS', 'playPauseBtnBS', 'speedSliderBS', 'customArrayInputBS', 'applyCustomBtnBS', 'errorMsgBS', 'toggleMetricsBtnBS', 'metricsDashboardBS');
-            singleVisualizers['selection-sort'].attachEventListeners('randomizeBtnSS', 'playPauseBtnSS', 'speedSliderSS', 'customArrayInputSS', 'applyCustomBtnSS', 'errorMsgSS', 'toggleMetricsBtnSS', 'metricsDashboardSS');
-            singleVisualizers['insertion-sort'].attachEventListeners('randomizeBtnIS', 'playPauseBtnIS', 'speedSliderIS', 'customArrayInputIS', 'applyCustomBtnIS', 'errorMsgIS', 'toggleMetricsBtnIS', 'metricsDashboardIS');
-            singleVisualizers['merge-sort'].attachEventListeners('randomizeBtnMS', 'playPauseBtnMS', 'speedSliderMS', 'customArrayInputMS', 'applyCustomBtnMS', 'errorMsgMS', 'toggleMetricsBtnMS', 'metricsDashboardMS');
-            singleVisualizers['quick-sort'].attachEventListeners('randomizeBtnQS', 'playPauseBtnQS', 'speedSliderQS', 'customArrayInputQS', 'applyCustomBtnQS', 'errorMsgQS', 'toggleMetricsBtnQS', 'metricsDashboardQS');
+            // Find this block and add the last argument to each call
+            // Replace the old block of singleVisualizers calls with this one
+            Object.entries(singleVisualizers).forEach(([key, visualizer]) => {
+                const suffix = visualizer.idSuffix;
+                visualizer.attachEventListeners({
+                    randomizeBtnId: `randomizeBtn${suffix}`,
+                    playPauseBtnId: `playPauseBtn${suffix}`,
+                    speedSliderId: `speedSlider${suffix}`,
+                    customInputId: `customArrayInput${suffix}`,
+                    applyBtnId: `applyCustomBtn${suffix}`,
+                    errorMsgId: `errorMsg${suffix}`,
+                    toggleMetricsBtnId: `toggleMetricsBtn${suffix}`,
+                    metricsDashboardId: `metricsDashboard${suffix}`,
+                    subtitleId: `subtitle${suffix}`,
+                    // Add new button IDs
+                    nearlySortedBtnId: `nearlySortedBtn${suffix}`,
+                    reversedBtnId: `reversedBtn${suffix}`,
+                    fewUniqueBtnId: `fewUniqueBtn${suffix}`
+                });
+            });
             
             const codePractices = {
                 'bubble-sort': new CodePractice('BS', ALGORITHMS['bubble-sort'].code),
@@ -1857,6 +2168,7 @@ void quickSort(std::vector<int>& arr, int low, int high) {
                 activeVisualizers: {},
                 sharedArray: [],
                 raceTimers: {},
+                complexityChart: null, // 👈 ADD THIS LINE
                 raceFinishedCount: 0,
                 isRacing: false,
 
@@ -1864,7 +2176,83 @@ void quickSort(std::vector<int>& arr, int low, int high) {
                     this.renderCheckboxes();
                     this.randomizeBtn.addEventListener('click', () => this.randomize());
                     this.playPauseBtn.addEventListener('click', () => this.toggleRace());
+                    this.createComplexityChart(); // 👈 ADD THIS LINE
                     this.randomize();
+                },
+
+                // Add this new method anywhere inside the comparisonTool object.
+                createComplexityChart() {
+                    const chartCanvas = document.getElementById('complexityChart');
+                    if (!chartCanvas) return;
+                    const ctx = chartCanvas.getContext('2d');
+
+                    const labels = Array.from({ length: 50 }, (_, i) => i + 1);
+                    const nSquaredData = labels.map(n => n * n);
+                    const nLogNData = labels.map(n => n * Math.log(n));
+                    const nData = labels.map(n => n);
+
+                    if (this.complexityChart) {
+                        this.complexityChart.destroy();
+                    }
+
+                    this.complexityChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: 'O(n²)',
+                                    data: nSquaredData,
+                                    borderColor: 'rgba(248, 113, 113, 0.5)', // red-400
+                                    borderWidth: 2,
+                                    pointRadius: 0,
+                                    tension: 0.1
+                                },
+                                {
+                                    label: 'O(n log n)',
+                                    data: nLogNData,
+                                    borderColor: 'rgba(251, 146, 60, 0.5)', // orange-400
+                                    borderWidth: 2,
+                                    pointRadius: 0,
+                                    tension: 0.1
+                                },
+                                {
+                                    label: 'O(n)',
+                                    data: nData,
+                                    borderColor: 'rgba(167, 139, 250, 0.5)', // violet-400
+                                    borderWidth: 2,
+                                    pointRadius: 0,
+                                    tension: 0.1
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                    labels: { color: '#94a3b8' }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: { color: '#94a3b8' },
+                                    grid: { color: 'rgba(51, 65, 85, 0.5)' }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Input Size (n)',
+                                        color: '#94a3b8'
+                                    },
+                                    ticks: { color: '#94a3b8' },
+                                    grid: { display: false }
+                                }
+                            }
+                        }
+                    });
                 },
 
                 renderCheckboxes() {
@@ -1941,6 +2329,15 @@ void quickSort(std::vector<int>& arr, int low, int high) {
                         const timerEl = document.getElementById(`timer-${vis.name.toLowerCase().replace(' ','-')}`);
                         if(timerEl) timerEl.textContent = 'Time: 0.00s';
                     });
+                    
+                    // Reset chart highlights
+                    if (this.complexityChart) {
+                        this.complexityChart.data.datasets.forEach(dataset => {
+                            dataset.borderWidth = 2;
+                            dataset.borderColor = dataset.borderColor.replace(/, 1\)/, ', 0.5)'); // Make transparent
+                        });
+                        this.complexityChart.update('none');
+                    }
                 },
 
                 toggleRace() {
@@ -2028,6 +2425,19 @@ void quickSort(std::vector<int>& arr, int low, int high) {
                         `;
                         this.resultsContainer.appendChild(resultEl);
                     });
+
+                    // Highlight the relevant complexity curves
+                    const complexities = new Set(
+                        this.getSelectedIds().map(id => ALGORITHMS[id].complexity)
+                    );
+
+                    this.complexityChart.data.datasets.forEach(dataset => {
+                        if (complexities.has(dataset.label)) {
+                            dataset.borderWidth = 4; // Make line thicker
+                            dataset.borderColor = dataset.borderColor.replace(/, 0.5\)/, ', 1)'); // Make opaque
+                        }
+                    });
+                    this.complexityChart.update();
                 }
             };
             
